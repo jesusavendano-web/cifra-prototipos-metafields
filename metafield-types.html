@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metafields · Tipos soportados</title>
+<meta name="shopify-api-key" content="prototype">
+<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
+<link rel="stylesheet" href="shared/cifra.css">
+<script src="shared/cifra.js" defer></script>
+</head>
+<body>
+
+<!--
+  Documentación de ENG-2310 (NO es una pantalla de la app): qué tipos de metafield soporta Cifra
+  y cómo se comportan en los reports. Cubre el criterio "Documentado qué tipos de metafield están soportados".
+  Sirve de referencia para back (sync) y para el copy/tooltips de settings-metafields.html.
+-->
+<s-page heading="Supported metafield types" inlineSize="large">
+  <s-section>
+    <s-stack gap="base">
+      <s-text color="subdued">How each Shopify type behaves once it's in a report. List types count the record once per value, so a breakdown can add up to more than the total.</s-text>
+      <s-table>
+        <s-table-header-row>
+          <s-table-header listSlot="primary">Shopify type</s-table-header>
+          <s-table-header>In reports</s-table-header>
+          <s-table-header>Filter</s-table-header>
+          <s-table-header listSlot="inline">Status</s-table-header>
+        </s-table-header-row>
+        <s-table-body>
+          <s-table-row><s-table-cell>Single line text, choice list</s-table-cell><s-table-cell>Text dimension</s-table-cell><s-table-cell>is / is not / contains</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Multi-line text</s-table-cell><s-table-cell>Text dimension (first 255 characters)</s-table-cell><s-table-cell>contains</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Integer, decimal</s-table-cell><s-table-cell>Number dimension</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>True or false</s-table-cell><s-table-cell>Yes / No dimension</s-table-cell><s-table-cell>is</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Date, date and time</s-table-cell><s-table-cell>Date dimension (day, week, month)</s-table-cell><s-table-cell>before / after / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Weight, volume, dimension</s-table-cell><s-table-cell>Number dimension, converted to the store's unit</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Rating, color, URL</s-table-cell><s-table-cell>Text dimension</s-table-cell><s-table-cell>is / is not</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Lists of any type above</s-table-cell><s-table-cell>One row per value</s-table-cell><s-table-cell>contains any of</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Money</s-table-cell><s-table-cell>Number dimension in the report's currency</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="info">Coming soon</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>Product, variant, collection, metaobject references</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell><s-badge>Not supported</s-badge></s-table-cell></s-table-row>
+          <s-table-row><s-table-cell>JSON, rich text, file</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell><s-badge>Not supported</s-badge></s-table-cell></s-table-row>
+        </s-table-body>
+      </s-table>
+    </s-stack>
+  </s-section>
+</s-page>
+</body>
+</html>

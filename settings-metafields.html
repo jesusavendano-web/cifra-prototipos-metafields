@@ -17,7 +17,7 @@
   Tabs = recurso dueño del metafield (Products, Variants, Orders, Customers). En la app son rutas; aquí el hash.
   Cada fila es una DEFINICIÓN de metafield de Shopify. El switch "In use" decide si Cifra la sincroniza y la
   ofrece como dimensión/filtro en los reports.
-  Nativo → s-page, s-section, s-switch, s-badge, s-tooltip, s-search-field, s-banner, s-table (tipos soportados).
+  Nativo → s-page, s-switch, s-badge, s-tooltip, s-banner. Tipos soportados: metafield-types.html (documentación).
   Custom → IndexTable (tabs, toolbar, footer), igual que settings-cost-products.html.
   Supuestos a validar con back: límite de 20 metafields en uso; "Coverage" = % de registros con valor.
 -->
@@ -30,7 +30,7 @@
     <s-text color="subdued">Turn on the metafields you want to analyze. Cifra syncs their values and adds them to Dimensions and Filters in every report.</s-text>
 
     <s-banner tone="warning" heading="2 definitions use a type Cifra can't report on yet" dismissible>
-      References, JSON and rich text metafields stay in Shopify. See the supported types at the bottom of this page.
+      References, JSON and rich text metafields stay in Shopify. They show as "Not supported" in the table below.
     </s-banner>
 
     <div class="c-indextable" data-custom="IndexTable">
@@ -72,33 +72,6 @@
       </div>
     </div>
 
-    <!-- Documentación de tipos soportados (criterio de aceptación de ENG-2310) -->
-    <s-section heading="Supported metafield types">
-      <s-stack gap="base">
-        <s-text color="subdued">How each Shopify type behaves once it's in a report. List types count the record once per value, so a breakdown can add up to more than the total.</s-text>
-        <s-table>
-          <s-table-header-row>
-            <s-table-header listSlot="primary">Shopify type</s-table-header>
-            <s-table-header>In reports</s-table-header>
-            <s-table-header>Filter</s-table-header>
-            <s-table-header listSlot="inline">Status</s-table-header>
-          </s-table-header-row>
-          <s-table-body>
-            <s-table-row><s-table-cell>Single line text, choice list</s-table-cell><s-table-cell>Text dimension</s-table-cell><s-table-cell>is / is not / contains</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Multi-line text</s-table-cell><s-table-cell>Text dimension (first 255 characters)</s-table-cell><s-table-cell>contains</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Integer, decimal</s-table-cell><s-table-cell>Number dimension</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>True or false</s-table-cell><s-table-cell>Yes / No dimension</s-table-cell><s-table-cell>is</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Date, date and time</s-table-cell><s-table-cell>Date dimension (day, week, month)</s-table-cell><s-table-cell>before / after / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Weight, volume, dimension</s-table-cell><s-table-cell>Number dimension, converted to the store's unit</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Rating, color, URL</s-table-cell><s-table-cell>Text dimension</s-table-cell><s-table-cell>is / is not</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Lists of any type above</s-table-cell><s-table-cell>One row per value</s-table-cell><s-table-cell>contains any of</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Money</s-table-cell><s-table-cell>Number dimension in the report's currency</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="info">Coming soon</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>Product, variant, collection, metaobject references</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell><s-badge>Not supported</s-badge></s-table-cell></s-table-row>
-            <s-table-row><s-table-cell>JSON, rich text, file</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell><s-badge>Not supported</s-badge></s-table-cell></s-table-row>
-          </s-table-body>
-        </s-table>
-      </s-stack>
-    </s-section>
   </s-stack>
 </s-page>
 

@@ -2,21 +2,12 @@
 // En la app real esto vive en React; aquí es vanilla para que el HTML sea autocontenido.
 
 (function () {
+  // Solo las pantallas de ENG-2310 (metafields). El resto de prototipos siguen en el repo pero fuera de la barra.
   const PAGES = [
-    ['index.html', 'Inventario'],
-    ['home.html', 'Home'],
-    ['onboarding.html', 'Onboarding'],
-    ['chat.html', 'Chat IA'],
-    ['dashboard.html', 'Dashboard'],
-    ['reports.html', 'Reports'],
-    ['report.html', 'Reporte'],
-    ['metric-tree.html', 'Metric tree'],
-    ['insights.html', 'Insights'],
-    ['integrations.html', 'Integrations'],
-    ['schedule.html', 'Schedule'],
-    ['settings.html', 'Settings'],
+    ['settings.html#metafields', 'Settings'],
     ['settings-metafields.html', 'Metafields'],
     ['report-metafields.html', 'Reporte metafields'],
+    ['metafield-types.html', 'Tipos soportados'],
   ];
 
   const svgNS = 'http://www.w3.org/2000/svg';
@@ -29,7 +20,7 @@
     bar.className = 'proto-bar';
     bar.setAttribute('aria-label', 'Prototipos');
     bar.innerHTML = '<strong>Cifra · Web Components 2.0-rc</strong>' +
-      PAGES.map(([href, label]) => `<a href="${href}"${href === here ? ' aria-current="page"' : ''}>${label}</a>`).join('') +
+      PAGES.map(([href, label]) => `<a href="${href}"${href.split('#')[0] === here ?' aria-current="page"' : ''}>${label}</a>`).join('') +
       '<span class="spacer"></span><button type="button" aria-pressed="false" data-toggle-custom>Resaltar custom</button>';
     document.body.prepend(bar);
     const btn = bar.querySelector('[data-toggle-custom]');
