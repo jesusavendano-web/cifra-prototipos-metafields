@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings · Metafields</title>
+<meta name="shopify-api-key" content="prototype">
+<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
+<link rel="stylesheet" href="shared/cifra.css">
+<script src="shared/cifra.js" defer></script>
+</head>
+<body>
+
+<!--
+  Pantalla: Settings › Metafields (/app/settings/metafields/:resource)  — ENG-2310
+  Página ancha (sin el nav de Settings), igual que Product costs.
+  Tabs = recurso dueño del metafield (Products, Variants, Orders, Customers). En la app son rutas; aquí el hash.
+  Cada fila es una DEFINICIÓN de metafield de Shopify. El switch "In use" decide si Cifra la sincroniza y la
+  ofrece como dimensión/filtro en los reports.
+  Nativo → s-page, s-section, s-switch, s-badge, s-tooltip, s-search-field, s-banner, s-table (tipos soportados).
+  Custom → IndexTable (tabs, toolbar, footer), igual que settings-cost-products.html.
+  Supuestos a validar con back: límite de 20 metafields en uso; "Coverage" = % de registros con valor.
+-->
+<s-page heading="Metafields" inlineSize="large">
+  <s-link slot="breadcrumb-actions" href="settings.html#metafields">Settings</s-link>
+  <s-button slot="secondary-actions" icon="refresh">Sync now</s-button>
+  <s-button slot="secondary-actions" icon="external" href="https://admin.shopify.com/settings/custom_data" target="_blank">Manage in Shopify</s-button>
+
+  <s-stack gap="base">
+    <s-text color="subdued">Turn on the metafields you want to analyze. Cifra syncs their values and adds them to Dimensions and Filters in every report.</s-text>
+
+    <s-banner tone="warning" heading="2 definitions use a type Cifra can't report on yet" dismissible>
+      References, JSON and rich text metafields stay in Shopify. See the supported types at the bottom of this page.
+    </s-banner>
+
+    <div class="c-indextable" data-custom="IndexTable">
+      <div class="c-indextable__bar">
+        <div class="c-tabs" role="tablist" id="mf-tabs">
+          <button class="c-tabs__tab" role="tab" aria-selected="true" data-resource="products">Products <s-badge>8</s-badge></button>
+          <button class="c-tabs__tab" role="tab" aria-selected="false" data-resource="variants">Variants <s-badge>4</s-badge></button>
+          <button class="c-tabs__tab" role="tab" aria-selected="false" data-resource="orders">Orders <s-badge>5</s-badge></button>
+          <button class="c-tabs__tab" role="tab" aria-selected="false" data-resource="customers">Customers <s-badge>6</s-badge></button>
+        </div>
+        <div class="c-indextable__tools">
+          <s-text color="subdued" id="mf-count">7 of 20 in use</s-text>
+          <s-button icon="search" accessibilityLabel="Search and filter"></s-button>
+          <s-button icon="sort" accessibilityLabel="Sort"></s-button>
+        </div>
+      </div>
+      <div class="c-indextable__scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>In use</th>
+              <th><button type="button">Name <s-icon type="sort" size="small"></s-icon></button></th>
+              <th>Namespace and key</th>
+              <th><button type="button">Type <s-icon type="sort" size="small"></s-icon></button></th>
+              <th>Shows up as</th>
+              <th class="c-num"><button type="button">Coverage <s-icon type="sort" size="small"></s-icon></button></th>
+              <th class="c-num"><button type="button">Used in <s-icon type="sort" size="small"></s-icon></button></th>
+            </tr>
+          </thead>
+          <tbody id="mf-rows"></tbody>
+        </table>
+      </div>
+      <div class="c-indextable__foot">
+        <span id="mf-foot">Showing 8 definitions</span>
+        <s-button-group>
+          <s-button icon="chevron-left" accessibilityLabel="Previous page" disabled></s-button>
+          <s-button icon="chevron-right" accessibilityLabel="Next page" disabled></s-button>
+        </s-button-group>
+      </div>
+    </div>
+
+    <!-- Documentación de tipos soportados (criterio de aceptación de ENG-2310) -->
+    <s-section heading="Supported metafield types">
+      <s-stack gap="base">
+        <s-text color="subdued">How each Shopify type behaves once it's in a report. List types count the record once per value, so a breakdown can add up to more than the total.</s-text>
+        <s-table>
+          <s-table-header-row>
+            <s-table-header listSlot="primary">Shopify type</s-table-header>
+            <s-table-header>In reports</s-table-header>
+            <s-table-header>Filter</s-table-header>
+            <s-table-header listSlot="inline">Status</s-table-header>
+          </s-table-header-row>
+          <s-table-body>
+            <s-table-row><s-table-cell>Single line text, choice list</s-table-cell><s-table-cell>Text dimension</s-table-cell><s-table-cell>is / is not / contains</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Multi-line text</s-table-cell><s-table-cell>Text dimension (first 255 characters)</s-table-cell><s-table-cell>contains</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Integer, decimal</s-table-cell><s-table-cell>Number dimension</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>True or false</s-table-cell><s-table-cell>Yes / No dimension</s-table-cell><s-table-cell>is</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Date, date and time</s-table-cell><s-table-cell>Date dimension (day, week, month)</s-table-cell><s-table-cell>before / after / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Weight, volume, dimension</s-table-cell><s-table-cell>Number dimension, converted to the store's unit</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Rating, color, URL</s-table-cell><s-table-cell>Text dimension</s-table-cell><s-table-cell>is / is not</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Lists of any type above</s-table-cell><s-table-cell>One row per value</s-table-cell><s-table-cell>contains any of</s-table-cell><s-table-cell><s-badge tone="success">Supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Money</s-table-cell><s-table-cell>Number dimension in the report's currency</s-table-cell><s-table-cell>= / &gt; / &lt; / between</s-table-cell><s-table-cell><s-badge tone="info">Coming soon</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>Product, variant, collection, metaobject references</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell><s-badge>Not supported</s-badge></s-table-cell></s-table-row>
+            <s-table-row><s-table-cell>JSON, rich text, file</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell>—</s-table-cell><s-table-cell><s-badge>Not supported</s-badge></s-table-cell></s-table-row>
+          </s-table-body>
+        </s-table>
+      </s-stack>
+    </s-section>
+  </s-stack>
+</s-page>
+
+<script>
+  // [name, namespace.key, type label, showsUp, coverage, usedIn, on, supported]
+  const DATA = {
+    products: [
+      ['Material', 'custom.material', 'Single line text', 'Dimension · Filter', '92%', 3, true, true],
+      ['Season', 'custom.season', 'Single line text (choices)', 'Dimension · Filter', '78%', 2, true, true],
+      ['Product line', 'custom.product_line', 'Single line text', 'Dimension · Filter', '100%', 1, true, true],
+      ['Launch date', 'custom.launch_date', 'Date', 'Date dimension · Filter', '64%', 0, false, true],
+      ['Eco certified', 'custom.eco_certified', 'True or false', 'Dimension · Filter', '41%', 0, false, true],
+      ['Care instructions', 'custom.care', 'Multi-line text', 'Dimension · Filter', '88%', 0, false, true],
+      ['Complementary products', 'shopify--discovery--product_recommendation.complementary_products', 'List of product references', null, '35%', 0, false, false],
+      ['Size chart', 'custom.size_chart', 'JSON', null, '22%', 0, false, false],
+    ],
+    variants: [
+      ['Supplier', 'custom.supplier', 'Single line text', 'Dimension · Filter', '97%', 2, true, true],
+      ['Pack size', 'custom.pack_size', 'Integer', 'Number dimension · Filter', '60%', 0, false, true],
+      ['Size group', 'custom.size_group', 'Single line text (choices)', 'Dimension · Filter', '83%', 0, false, true],
+      ['Shipping weight', 'custom.shipping_weight', 'Weight', 'Number dimension · Filter', '100%', 0, false, true],
+    ],
+    orders: [
+      ['Gift order', 'custom.is_gift', 'True or false', 'Dimension · Filter', '100%', 1, true, true],
+      ['Sales rep', 'b2b.sales_rep', 'Single line text', 'Dimension · Filter', '12%', 1, true, true],
+      ['Delivery slot', 'custom.delivery_slot', 'Date and time', 'Date dimension · Filter', '48%', 0, false, true],
+      ['Gift message', 'custom.gift_message', 'Multi-line text', 'Dimension · Filter', '9%', 0, false, true],
+      ['PO number', 'b2b.po_number', 'Single line text', 'Dimension · Filter', '12%', 0, false, true],
+    ],
+    customers: [
+      ['Loyalty tier', 'loyalty.tier', 'Single line text (choices)', 'Dimension · Filter', '71%', 4, true, true],
+      ['Acquisition source', 'custom.how_did_you_hear', 'Single line text', 'Dimension · Filter', '38%', 0, false, true],
+      ['Birthday', 'facts.birth_date', 'Date', 'Date dimension · Filter', '26%', 0, false, true],
+      ['Lifetime points', 'loyalty.points', 'Integer', 'Number dimension · Filter', '71%', 0, false, true],
+      ['Favorite color', 'custom.favorite_color', 'Color', 'Dimension · Filter', '15%', 0, false, true],
+      ['Wishlist', 'custom.wishlist', 'List of product references', null, '19%', 0, false, false],
+    ],
+  };
+
+  const tbody = document.getElementById('mf-rows');
+  const tabs = [...document.querySelectorAll('#mf-tabs [data-resource]')];
+
+  function render(resource) {
+    const rows = DATA[resource];
+    tbody.innerHTML = rows.map(([name, key, type, shows, cov, used, on, ok], i) => `
+      <tr${ok ? '' : ' data-readonly'}>
+        <td>${ok
+          ? `<s-switch label="Use ${name} in reports" labelAccessibilityVisibility="exclusive"${on ? ' checked' : ''}></s-switch>`
+          : `<s-switch label="Use ${name} in reports" labelAccessibilityVisibility="exclusive" disabled></s-switch>`}</td>
+        <td class="c-strong">${name}</td>
+        <td><code class="c-mfkey">${key}</code></td>
+        <td>${type}</td>
+        <td>${ok ? shows : `<s-badge interestFor="mf-tip-${resource}-${i}">Not supported</s-badge><s-tooltip id="mf-tip-${resource}-${i}">${type} can't be grouped or filtered yet.</s-tooltip>`}</td>
+        <td class="c-num">${cov}</td>
+        <td class="c-num">${used ? `<s-link href="reports.html">${used} report${used > 1 ? 's' : ''}</s-link>` : '—'}</td>
+      </tr>`).join('');
+    document.getElementById('mf-foot').textContent = `Showing ${rows.length} definitions`;
+  }
+
+  function route() {
+    const id = (location.hash || '#products').slice(1);
+    const resource = DATA[id] ? id : 'products';
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.resource === resource)));
+    render(resource);
+  }
+  tabs.forEach((t) => t.addEventListener('click', () => { location.hash = t.dataset.resource; }));
+  window.addEventListener('hashchange', route);
+  route();
+</script>
+</body>
+</html>

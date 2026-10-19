@@ -15,6 +15,8 @@
     ['integrations.html', 'Integrations'],
     ['schedule.html', 'Schedule'],
     ['settings.html', 'Settings'],
+    ['settings-metafields.html', 'Metafields'],
+    ['report-metafields.html', 'Reporte metafields'],
   ];
 
   const svgNS = 'http://www.w3.org/2000/svg';

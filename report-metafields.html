@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporte · Gross Profit by Material</title>
+<meta name="shopify-api-key" content="prototype">
+<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
+<link rel="stylesheet" href="shared/cifra.css">
+<script src="shared/cifra.js" defer></script>
+</head>
+<body>
+
+<!--
+  Pantalla: Reports › custom report con metafields (/app/reports/:id) — ENG-2310
+  Mismo explorador que report.html. Lo nuevo:
+   1. El picker de Dimensions (botón +) incluye los metafields activados en Settings › Metafields,
+      dentro del grupo de su recurso ("Product › Material"), marcados con el ícono de metafield.
+   2. Filters acepta metafields con operadores según el tipo (ver tabla de tipos en settings-metafields.html).
+   3. Si no hay metafields activos, el picker muestra un link a Settings › Metafields en vez del grupo.
+  Nativo → s-popover, s-search-field, s-choice-list, s-chip, s-button, s-link.
+  Custom → tabla de datos y panel de configuración (igual que report.html).
+-->
+<s-page heading="Gross Profit by Material" inlineSize="large">
+  <s-link slot="breadcrumb-actions" href="reports.html">Reports</s-link>
+  <s-button slot="secondary-actions" commandFor="report-actions">Actions</s-button>
+  <s-menu id="report-actions" accessibilityLabel="Report actions">
+    <s-button icon="edit">Rename</s-button>
+    <s-button icon="export">Export</s-button>
+    <s-button icon="plus">Add to dashboard</s-button>
+    <s-button icon="delete" tone="critical">Delete</s-button>
+  </s-menu>
+
+  <div class="c-stack">
+    <div class="c-row c-row--between">
+      <div class="c-filterbar">
+        <button class="c-pill" type="button" data-custom="DateRangePicker"><s-icon type="calendar"></s-icon><span>Last 30 days</span></button>
+        <button class="c-pill" type="button" data-custom="ComparisonPicker"><s-icon type="calendar-compare"></s-icon>Previous period</button>
+        <button class="c-pill" type="button"><s-icon type="currency-convert"></s-icon>USD $</button>
+      </div>
+      <div class="c-xbar" data-custom="ReportActionBar">
+        <button class="c-pill" type="button" id="btn-controls" aria-pressed="true"><s-icon type="adjust"></s-icon>Controls</button>
+      </div>
+    </div>
+
+    <div class="c-xlayout" id="xlayout">
+      <div data-xmain>
+        <div class="c-datatable" data-sortable data-custom="ReportTable">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col"><button type="button">Product › Material</button></th>
+                <th scope="col" aria-sort="descending"><button type="button">Gross Profit <s-icon type="sort" size="small"></s-icon></button></th>
+                <th scope="col"><button type="button">Gross Profit Margin <s-icon type="sort" size="small"></s-icon></button></th>
+                <th scope="col"><button type="button">Net Sales <s-icon type="sort" size="small"></s-icon></button></th>
+                <th scope="col"><button type="button">Total Ordered Items <s-icon type="sort" size="small"></s-icon></button></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="c-total">
+                <td>Sep 12–Oct 11, 2026<span class="c-sub">Aug 13–Sep 11, 2026</span><span class="c-sub">% Change</span></td>
+                <td>$4,571.48<span class="c-sub">$1,361.45</span><span class="c-delta c-delta--up">↗ 235.78%</span></td>
+                <td>52.1%<span class="c-sub">40.1%</span><span class="c-delta c-delta--up">↗ 29.93%</span></td>
+                <td>$8,760.13<span class="c-sub">$3,388.17</span><span class="c-delta c-delta--up">↗ 158.55%</span></td>
+                <td>214<span class="c-sub">97</span><span class="c-delta c-delta--up">↗ 120.62%</span></td>
+              </tr>
+              <tr><td>Wood<span class="c-sub">Wood</span></td><td>$1,912.40<span class="c-sub">$604.10</span></td><td>58.3%<span class="c-sub">44.0%</span></td><td>$3,280.30<span class="c-sub">$1,372.95</span></td><td>71<span class="c-sub">33</span></td></tr>
+              <tr><td>Carbon fiber<span class="c-sub">Carbon fiber</span></td><td>$1,388.22<span class="c-sub">$412.80</span></td><td>49.6%<span class="c-sub">38.2%</span></td><td>$2,798.83<span class="c-sub">$1,080.63</span></td><td>38<span class="c-sub">15</span></td></tr>
+              <tr><td>Fiberglass<span class="c-sub">Fiberglass</span></td><td>$842.95<span class="c-sub">$251.07</span></td><td>51.0%<span class="c-sub">39.5%</span></td><td>$1,652.84<span class="c-sub">$635.62</span></td><td>52<span class="c-sub">29</span></td></tr>
+              <tr><td>Wax blend<span class="c-sub">Wax blend</span></td><td>$290.06<span class="c-sub">$93.48</span></td><td>63.0%<span class="c-sub">55.1%</span></td><td>$460.41<span class="c-sub">$169.66</span></td><td>40<span class="c-sub">17</span></td></tr>
+              <tr><td><s-text color="subdued">No value</s-text><span class="c-sub">No value</span></td><td>$137.85<span class="c-sub">$0.00</span></td><td>24.0%<span class="c-sub">—</span></td><td>$567.75<span class="c-sub">$129.31</span></td><td>13<span class="c-sub">3</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside class="c-xpanel" aria-label="Report settings" data-custom="ReportConfigPanel">
+        <div class="c-xtabs" role="tablist" data-custom="ExplorationTabs">
+          <button class="c-xtab" role="tab" aria-selected="true"><i class="c-icon-mask c-icon-mask--chart-vertical-filled" aria-hidden="true"></i>Standard</button>
+          <button class="c-xtab" role="tab" aria-selected="false"><s-icon type="chart-cohort"></s-icon>Cohorts</button>
+        </div>
+
+        <div class="c-xbody">
+          <div class="c-xgroup">
+            <div class="c-xgroup__head"><span>Metrics</span><s-button icon="plus" variant="tertiary" accessibilityLabel="Add metric"></s-button></div>
+            <div class="c-xgroup__item">Gross Profit</div>
+            <div class="c-xgroup__item">Gross Profit Margin</div>
+            <div class="c-xgroup__item">Net Sales</div>
+            <div class="c-xgroup__item">Total Ordered Items</div>
+          </div>
+
+          <div class="c-xgroup">
+            <div class="c-xgroup__head"><span>Dimensions</span><s-button icon="plus" variant="tertiary" accessibilityLabel="Add dimension" commandFor="dim-picker"></s-button></div>
+            <div class="c-xgroup__item"><span>Material</span><s-icon type="metafields" color="subdued" interestFor="mf-dim-tip"></s-icon></div>
+            <s-tooltip id="mf-dim-tip">Product metafield · custom.material</s-tooltip>
+          </div>
+
+          <!-- Picker de dimensiones: mismo patrón agrupado-por-recurso que la app hoy, + metafields dentro de cada recurso -->
+          <s-popover id="dim-picker">
+            <div class="c-dimpicker" data-custom="DimensionPicker">
+              <s-search-field label="Search dimensions" labelAccessibilityVisibility="exclusive" placeholder="Search dimensions"></s-search-field>
+              <div class="c-dimpicker__list">
+                <s-choice-list label="Product" multiple name="dim-product">
+                  <s-choice value="product_name">Product Name</s-choice>
+                  <s-choice value="product_type">Product Type</s-choice>
+                  <s-choice value="vendor">Vendor</s-choice>
+                  <s-choice value="mf_material" selected>Material<s-text slot="details">Metafield · custom.material</s-text></s-choice>
+                  <s-choice value="mf_season">Season<s-text slot="details">Metafield · custom.season</s-text></s-choice>
+                  <s-choice value="mf_line">Product line<s-text slot="details">Metafield · custom.product_line</s-text></s-choice>
+                </s-choice-list>
+                <s-choice-list label="Variant" multiple name="dim-variant">
+                  <s-choice value="variant">Variant Title</s-choice>
+                  <s-choice value="sku">SKU</s-choice>
+                  <s-choice value="mf_supplier">Supplier<s-text slot="details">Metafield · custom.supplier</s-text></s-choice>
+                </s-choice-list>
+                <s-choice-list label="Order" multiple name="dim-order">
+                  <s-choice value="channel">Sales Channel</s-choice>
+                  <s-choice value="discount">Discount Code</s-choice>
+                  <s-choice value="mf_gift">Gift order<s-text slot="details">Metafield · custom.is_gift</s-text></s-choice>
+                  <s-choice value="mf_rep">Sales rep<s-text slot="details">Metafield · b2b.sales_rep</s-text></s-choice>
+                </s-choice-list>
+                <s-choice-list label="Customer" multiple name="dim-customer">
+                  <s-choice value="customer_type">Customer Type</s-choice>
+                  <s-choice value="email_domain">Email Domain</s-choice>
+                  <s-choice value="mf_tier">Loyalty tier<s-text slot="details">Metafield · loyalty.tier</s-text></s-choice>
+                </s-choice-list>
+                <s-text color="subdued">Missing a metafield? <s-link href="settings-metafields.html">Turn it on in Settings</s-link></s-text>
+              </div>
+              <div class="c-dimpicker__foot">
+                <s-button variant="tertiary" commandFor="dim-picker" command="--hide">Clear</s-button>
+                <s-button variant="primary" commandFor="dim-picker" command="--hide">Apply</s-button>
+              </div>
+            </div>
+          </s-popover>
+
+          <div class="c-xgroup">
+            <div class="c-xgroup__head"><span>Visualization</span></div>
+            <div class="c-xgroup__item c-xgroup__item--control">
+              <s-select label="Visualization" labelAccessibilityVisibility="exclusive" value="table">
+                <s-option value="table">Display Table</s-option><s-option value="bar">Bar chart</s-option><s-option value="donut">Donut</s-option>
+              </s-select>
+            </div>
+          </div>
+
+          <div class="c-xgroup">
+            <div class="c-xgroup__head"><span>Filters</span><s-button icon="plus" variant="tertiary" accessibilityLabel="Add filter" commandFor="filter-picker"></s-button></div>
+            <div class="c-xgroup__item"><s-stack gap="small-200"><s-text color="subdued">Date range</s-text><s-chip>Last 30 days</s-chip></s-stack></div>
+            <div class="c-xgroup__item"><s-stack gap="small-200"><s-text color="subdued">Product › Season</s-text><s-clickable-chip removable accessibilityLabel="Remove Season filter">is Winter, All season</s-clickable-chip></s-stack></div>
+          </div>
+
+          <!-- Filtro por metafield: el operador depende del tipo (texto → is / is not / contains) -->
+          <s-popover id="filter-picker">
+            <s-box padding="base" maxInlineSize="280px">
+              <s-stack gap="base">
+                <s-select label="Field" value="mf_season">
+                  <s-option value="product_type">Product › Product Type</s-option>
+                  <s-option value="mf_material">Product › Material (metafield)</s-option>
+                  <s-option value="mf_season">Product › Season (metafield)</s-option>
+                  <s-option value="mf_gift">Order › Gift order (metafield)</s-option>
+                  <s-option value="mf_tier">Customer › Loyalty tier (metafield)</s-option>
+                </s-select>
+                <s-select label="Condition" value="is">
+                  <s-option value="is">is any of</s-option>
+                  <s-option value="not">is none of</s-option>
+                  <s-option value="contains">contains</s-option>
+                  <s-option value="empty">has no value</s-option>
+                </s-select>
+                <s-choice-list label="Values" multiple name="season-values">
+                  <s-choice value="winter" selected>Winter</s-choice>
+                  <s-choice value="all" selected>All season</s-choice>
+                  <s-choice value="summer">Summer</s-choice>
+                </s-choice-list>
+                <s-stack direction="inline" justifyContent="end" gap="small">
+                  <s-button commandFor="filter-picker" command="--hide">Cancel</s-button>
+                  <s-button variant="primary" commandFor="filter-picker" command="--hide">Apply</s-button>
+                </s-stack>
+              </s-stack>
+            </s-box>
+          </s-popover>
+        </div>
+      </aside>
+    </div>
+  </div>
+</s-page>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btn-controls').addEventListener('click', (e) => {
+    const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+    e.currentTarget.setAttribute('aria-pressed', String(on));
+    document.getElementById('xlayout').classList.toggle('is-panel-hidden', !on);
+  });
+});
+</script>
+</body>
+</html>

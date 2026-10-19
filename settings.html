@@ -18,6 +18,7 @@
   En el prototipo las secciones se cambian con el hash (#general, #costs, ...); en la app son rutas.
   Custom → nav lateral (s-clickable no da el estado "current"). Todo lo demás es nativo.
   Subpáginas de costos: settings-cost-custom.html, -products, -shipping, -gateways.
+  Metafields (ENG-2310): #metafields resume por recurso; la tabla para activarlos es settings-metafields.html.
 -->
 <s-page inlineSize="large">
   <div class="c-settings2">
@@ -27,6 +28,7 @@
       <nav class="c-settingsnav" aria-label="Settings" data-custom="SettingsNav">
         <a href="#general"><s-icon type="work"></s-icon>General</a>
         <a href="#costs"><s-icon type="cash-dollar"></s-icon>Costs</a>
+        <a href="#metafields"><s-icon type="metafields"></s-icon>Metafields</a>
         <a href="#reporting"><s-icon type="file"></s-icon>Reporting</a>
         <a href="#billing"><s-icon type="receipt"></s-icon>Billing</a>
         <a href="#resources"><s-icon type="pin"></s-icon>Resources</a>
@@ -90,6 +92,52 @@
             <s-badge tone="success">Configured</s-badge><s-icon type="chevron-right" color="subdued"></s-icon>
           </a>
         </s-section>
+      </div>
+
+      <!-- ============ Metafields (ENG-2310) ============ -->
+      <!--
+        Mismo patrón que Costs: card con una fila por recurso → subpágina ancha con la tabla
+        (settings-metafields.html). Solo se listan DEFINICIONES de metafield: tienen tipo, así que
+        Cifra sabe si convertirlas en dimensión de texto, número, fecha o sí/no.
+      -->
+      <div class="c-settings-view" data-view="metafields" hidden>
+        <s-stack gap="base">
+          <s-section padding="none">
+            <s-box padding="base">
+              <s-stack gap="small">
+                <s-stack direction="inline" justifyContent="space-between" alignItems="start" gap="base">
+                  <s-stack gap="none">
+                    <s-text fontWeight="semibold">Metafields</s-text>
+                    <s-text color="subdued">Choose which Shopify metafields Cifra syncs, so you can group and filter your reports by them.</s-text>
+                  </s-stack>
+                  <s-button icon="refresh" interestFor="mf-sync-tip">Sync now</s-button>
+                  <s-tooltip id="mf-sync-tip">Fetch new metafield definitions from Shopify.</s-tooltip>
+                </s-stack>
+                <s-text color="subdued">7 of 23 definitions in use · Last synced 12 min ago</s-text>
+              </s-stack>
+            </s-box>
+            <a class="c-listrow" href="settings-metafields.html#products">
+              <span><span class="c-listrow__title">Products</span><br><span class="c-listrow__desc">Material, season, product line…</span></span>
+              <s-badge tone="success">3 of 8 in use</s-badge><s-icon type="chevron-right" color="subdued"></s-icon>
+            </a>
+            <a class="c-listrow" href="settings-metafields.html#variants">
+              <span><span class="c-listrow__title">Variants</span><br><span class="c-listrow__desc">Size group, supplier, pack size…</span></span>
+              <s-badge tone="success">1 of 4 in use</s-badge><s-icon type="chevron-right" color="subdued"></s-icon>
+            </a>
+            <a class="c-listrow" href="settings-metafields.html#orders">
+              <span><span class="c-listrow__title">Orders</span><br><span class="c-listrow__desc">Gift order, B2B reference, delivery slot…</span></span>
+              <s-badge tone="success">2 of 5 in use</s-badge><s-icon type="chevron-right" color="subdued"></s-icon>
+            </a>
+            <a class="c-listrow" href="settings-metafields.html#customers">
+              <span><span class="c-listrow__title">Customers</span><br><span class="c-listrow__desc">Loyalty tier, acquisition source, birthday…</span></span>
+              <s-badge>1 of 6 in use</s-badge><s-icon type="chevron-right" color="subdued"></s-icon>
+            </a>
+          </s-section>
+
+          <s-banner tone="info" heading="Where metafields show up">
+            Metafields you turn on appear in every custom report under Dimensions and Filters, next to the rest of their resource (for example "Product › Material"). Turning one off hides it from the pickers; reports that already use it keep working.
+          </s-banner>
+        </s-stack>
       </div>
 
       <!-- ============ Reporting ============ -->

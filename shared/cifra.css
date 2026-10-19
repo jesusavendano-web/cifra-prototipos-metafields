@@ -1147,3 +1147,12 @@ body.no-fade::after { display: none; }
 .c-stat > span:first-child { align-self: center; }
 .c-stat .c-stat__spin { grid-row: 1; grid-column: 2; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; }
 .c-stat .c-stat__spin s-spinner { position: static !important; grid-row: auto; grid-column: auto; }
+
+/* ------------------------------------------------------------------ */
+/* Metafields (ENG-2310)                                                */
+/* ------------------------------------------------------------------ */
+.c-mfkey { font: 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--c-text-secondary); }
+.c-xgroup__item .c-mftag { color: var(--c-text-secondary); font-size: var(--c-fs-small); }
+.c-dimpicker { display: grid; gap: 8px; padding: 8px; width: 260px; }
+.c-dimpicker__list { max-height: 300px; overflow-y: auto; display: grid; gap: 12px; }
+.c-dimpicker__foot { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; border-top: 1px solid var(--c-border); }
