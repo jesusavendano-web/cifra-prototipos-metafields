@@ -149,7 +149,7 @@
           ? `<s-switch label="Use ${name} in reports" labelAccessibilityVisibility="exclusive"${on ? ' checked' : ''}></s-switch>`
           : `<s-switch label="Use ${name} in reports" labelAccessibilityVisibility="exclusive" disabled></s-switch>`}</td>
         <td class="c-strong">${name}</td>
-        <td><code class="c-mfkey">${key}</code></td>
+        <td><code class="c-mfkey" title="${key}">${key}</code></td>
         <td>${type}</td>
         <td>${ok ? shows : `<s-badge interestFor="mf-tip-${resource}-${i}">Not supported</s-badge><s-tooltip id="mf-tip-${resource}-${i}">${type} can't be grouped or filtered yet.</s-tooltip>`}</td>
         <td class="c-num">${cov}</td>

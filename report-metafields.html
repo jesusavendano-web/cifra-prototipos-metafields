@@ -34,7 +34,7 @@
   <div class="c-stack">
     <div class="c-row c-row--between">
       <div class="c-filterbar">
-        <button class="c-pill" type="button" data-custom="DateRangePicker"><s-icon type="calendar"></s-icon><span>Last 30 days</span></button>
+        <button class="c-pill" type="button" data-custom="DateRangePicker"><s-icon type="calendar"></s-icon><span data-label>Last 30 days</span></button>
         <button class="c-pill" type="button" data-custom="ComparisonPicker"><s-icon type="calendar-compare"></s-icon>Previous period</button>
         <button class="c-pill" type="button"><s-icon type="currency-convert"></s-icon>USD $</button>
       </div>
@@ -91,7 +91,7 @@
 
           <div class="c-xgroup">
             <div class="c-xgroup__head"><span>Dimensions</span><s-button icon="plus" variant="tertiary" accessibilityLabel="Add dimension" commandFor="dim-picker"></s-button></div>
-            <div class="c-xgroup__item"><span>Material</span><s-icon type="metafields" color="subdued" interestFor="mf-dim-tip"></s-icon></div>
+            <div class="c-xgroup__item"><span>Material</span><s-text color="subdued" interestFor="mf-dim-tip">Metafield</s-text></div>
             <s-tooltip id="mf-dim-tip">Product metafield · custom.material</s-tooltip>
           </div>
 
@@ -155,7 +155,7 @@
                 <s-select label="Field" value="mf_season">
                   <s-option value="product_type">Product › Product Type</s-option>
                   <s-option value="mf_material">Product › Material (metafield)</s-option>
-                  <s-option value="mf_season">Product › Season (metafield)</s-option>
+                  <s-option value="mf_season" selected>Product › Season (metafield)</s-option>
                   <s-option value="mf_gift">Order › Gift order (metafield)</s-option>
                   <s-option value="mf_tier">Customer › Loyalty tier (metafield)</s-option>
                 </s-select>

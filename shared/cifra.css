@@ -1151,7 +1151,7 @@ body.no-fade::after { display: none; }
 /* ------------------------------------------------------------------ */
 /* Metafields (ENG-2310)                                                */
 /* ------------------------------------------------------------------ */
-.c-mfkey { font: 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--c-text-secondary); }
+.c-mfkey { display: inline-block; max-width: 220px; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--c-text-secondary); }
 .c-xgroup__item .c-mftag { color: var(--c-text-secondary); font-size: var(--c-fs-small); }
 .c-dimpicker { display: grid; gap: 8px; padding: 8px; width: 260px; }
 .c-dimpicker__list { max-height: 300px; overflow-y: auto; display: grid; gap: 12px; }
