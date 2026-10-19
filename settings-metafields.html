@@ -126,7 +126,7 @@
         <td>${type}</td>
         <td>${ok ? shows : `<s-badge interestFor="mf-tip-${resource}-${i}">Not supported</s-badge><s-tooltip id="mf-tip-${resource}-${i}">${type} can't be grouped or filtered yet.</s-tooltip>`}</td>
         <td class="c-num">${cov}</td>
-        <td class="c-num">${used ? `<s-link href="reports.html">${used} report${used > 1 ? 's' : ''}</s-link>` : '—'}</td>
+        <td class="c-num">${used ? `<s-link href="reports.html">${used} report${used > 1 ? 's' : ''}</s-link>` : ''}</td>
       </tr>`).join('');
     document.getElementById('mf-foot').textContent = `Showing ${rows.length} definitions`;
   }
